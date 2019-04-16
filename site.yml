@@ -1,0 +1,12 @@
+---
+- hosts: all
+  roles:
+    - { role: commom, tags: commom }
+
+- hosts: master
+  roles:
+    - { role: k8s-master, tags: k8s-master }
+
+- hosts: node
+  roles:
+    - { role: k8s-node, tags: k8s-node }

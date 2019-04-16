@@ -1,0 +1,28 @@
+---
+- name: Add an Apt signing key K8S.
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  when: ansible_os_family == 'Debian'
+  become: true
+
+- name: Add repository K8S.
+  apt_repository:
+    filename: kubernetes
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+  when: ansible_os_family == 'Debian'
+  become: true
+
+- name: Install packages K8S.
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+      - "kubelet"
+      - "kubeadm"
+      - "kubectl"
+  become: true
+
+- name: Initizaling kubeadm
+  command: kubeadm init
