@@ -26,3 +26,4 @@
 
 - name: Initizaling kubeadm
   command: kubeadm init
+  become: true
