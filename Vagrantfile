@@ -3,7 +3,7 @@
 
 machines = {
 	"master" => {"memory"=>"1024", "cpus"=>"2", "ip" => "10" },
-	"node01" => {"memory"=>"1024", "cpus"=>"2vagr	v", "ip" => "11" },
+	"node01" => {"memory"=>"1024", "cpus"=>"2", "ip" => "11" },
 }
 
 Vagrant.configure("2") do |config|

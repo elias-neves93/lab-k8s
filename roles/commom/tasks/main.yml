@@ -11,6 +11,12 @@
   when: ansible_swaptotal_mb > 0
   become: true
 
+- name: Create docker folder
+  file:
+    path: /etc/docker
+    state: directory
+  become: true
+
 - name: Configure daemon docker | SystemD
   template:
     src: docker-daemon.json.j2
