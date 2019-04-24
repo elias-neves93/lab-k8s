@@ -1,6 +1,3 @@
 ---
 - include: install-master.yml
   tags: install-master
-
-- include: install-node.yml
-  tags: install-node

@@ -11,28 +11,12 @@
   when: ansible_swaptotal_mb > 0
   become: true
 
-- name: Create docker folder
-  file:
-    path: /etc/docker
-    state: directory
-  become: true
-
-- name: Configure daemon docker | SystemD
-  template:
-    src: docker-daemon.json.j2
-    dest: /etc/docker/daemon.json
-  notify:
-    - Reload daemon
-    - Restar docker service
-  become: true
-
 - name: Installing depends
   apt:
     name: "{{ item }}"
     state: present
   with_items:
     - "python"
-    - "vim"
     - "apt-transport-https"
     - "ca-certificates"
     - "curl"
@@ -58,6 +42,21 @@
   when: ansible_os_family == 'Debian'
   become: true
 
+- name: Add an Apt signing key K8S.
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  when: ansible_os_family == 'Debian'
+  become: true
+
+- name: Add repository K8S.
+  apt_repository:
+    filename: kubernetes
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+  when: ansible_os_family == 'Debian'
+  become: true
+
 - name: Update repos
   command: apt-get update
   become: true
@@ -65,3 +64,29 @@
 - name: install Docker
   command: apt-get install docker-ce docker-ce-cli containerd.io -y
   become: true
+
+- name: Create docker folder
+  file:
+    path: /etc/docker
+    state: directory
+  become: true
+
+- name: Configure daemon docker | SystemD
+  template:
+    src: docker-daemon.json.j2
+    dest: /etc/docker/daemon.json
+  notify:
+    - Reload daemon
+    - Restar docker service
+  become: true
+
+- name: Install packages K8S.
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+      - "kubelet"
+      - "kubeadm"
+      - "kubectl"
+  become: true
+

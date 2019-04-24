@@ -1,0 +1,12 @@
+---
+- name: copy file to host
+  copy:
+    src: roles/k8s-node/files/kubeadm_join
+    dest: /root/kubeadm_join
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Joining on Cluster K8S
+  command: bash /root/kubeadm_join
+  become: true
