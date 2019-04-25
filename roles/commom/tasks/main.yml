@@ -13,9 +13,9 @@
 
 - name: Installing depends
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
+    name: "{{ packages }}"
+  vars:
+    packages:
     - "python"
     - "apt-transport-https"
     - "ca-certificates"
@@ -58,12 +58,21 @@
   become: true
 
 - name: Update repos
-  command: apt-get update
+  apt:
+    update_cache: yes
   become: true
 
 - name: install Docker
-  command: apt-get install docker-ce docker-ce-cli containerd.io -y
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - "docker-ce"
+    - "docker-ce-cli"
+    - "containerd.io"
   become: true
+
+
 
 - name: Create docker folder
   file:
@@ -82,11 +91,11 @@
 
 - name: Install packages K8S.
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-      - "kubelet"
-      - "kubeadm"
-      - "kubectl"
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - "kubeadm"
+    - "kubectl"
+    - "kubelet"
   become: true
 
