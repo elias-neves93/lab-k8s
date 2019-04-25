@@ -1,11 +1,16 @@
 ---
 - name: Initizaling kubeadm
   command: kubeadm init --apiserver-advertise-address=192.168.88.10
-  run_once: true
+  register: command_result
+  changed_when: command_result.changed
   become: true
 
 - name: Configure kubectl
   shell: mkdir -p $HOME/.kube && cp -i /etc/kubernetes/admin.conf $HOME/.kube/config && chown $(id -u):$(id -g) $HOME/.kube/config
+  become: true
+
+- name: Configure weave network Pod.
+  command: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=Q2xpZW50IFZlcnNpb246IHZlcnNpb24uSW5mb3tNYWpvcjoiMSIsIE1pbm9yOiIxNCIsIEdpdFZlcnNpb246InYxLjE0LjEiLCBHaXRDb21taXQ6ImI3Mzk0MTAyZDZlZjc3ODAxN2YyY2E0MDQ2YWJiYWEyM2I4OGMyOTAiLCBHaXRUcmVlU3RhdGU6ImNsZWFuIiwgQnVpbGREYXRlOiIyMDE5LTA0LTA4VDE3OjExOjMxWiIsIEdvVmVyc2lvbjoiZ28xLjEyLjEiLCBDb21waWxlcjoiZ2MiLCBQbGF0Zm9ybToibGludXgvYW1kNjQifQpTZXJ2ZXIgVmVyc2lvbjogdmVyc2lvbi5JbmZve01ham9yOiIxIiwgTWlub3I6IjE0IiwgR2l0VmVyc2lvbjoidjEuMTQuMSIsIEdpdENvbW1pdDoiYjczOTQxMDJkNmVmNzc4MDE3ZjJjYTQwNDZhYmJhYTIzYjg4YzI5MCIsIEdpdFRyZWVTdGF0ZToiY2xlYW4iLCBCdWlsZERhdGU6IjIwMTktMDQtMDhUMTc6MDI6NThaIiwgR29WZXJzaW9uOiJnbzEuMTIuMSIsIENvbXBpbGVyOiJnYyIsIFBsYXRmb3JtOiJsaW51eC9hbWQ2NCJ9Cg=="
   become: true
 
 - name: Create key to enter on Cluster
@@ -16,8 +21,4 @@
 - name: "Save kubeadm_join log"
   local_action: copy content="{{ kubeadm_join.stdout_lines[0] }}" dest="roles/k8s-node/files/kubeadm_join"
   become_method: sudo
-  become: true
-
-- name: Configure weave network Pod.
-  command: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
   become: true
