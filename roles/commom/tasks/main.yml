@@ -27,7 +27,6 @@
 - name: Add an Apt signing key Docker.
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
   when: ansible_os_family == 'Debian'
   become: true
 
@@ -38,14 +37,12 @@
   apt_repository:
     filename: docker
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
-    state: present
   when: ansible_os_family == 'Debian'
   become: true
 
 - name: Add an Apt signing key K8S.
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    state: present
   when: ansible_os_family == 'Debian'
   become: true
 
@@ -53,7 +50,6 @@
   apt_repository:
     filename: kubernetes
     repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
-    state: present
   when: ansible_os_family == 'Debian'
   become: true
 
