@@ -24,6 +24,6 @@ Vagrant.configure("2") do |config|
     end
   end
 	config.vm.provision "shell", inline: <<-SHELL
-	 sudo apt update && sudo apt upgrade -y && sudo apt install python -y
+	 sudo apt update && sudo apt install python -y
  SHELL
 end

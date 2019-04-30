@@ -9,4 +9,4 @@
 
 - hosts: node
   roles:
-    - { role: k8s-node, tags: k8s-node }
+      - { role: k8s-node, tags: k8s-node }

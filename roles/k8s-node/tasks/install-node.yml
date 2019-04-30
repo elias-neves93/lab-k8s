@@ -6,6 +6,7 @@
     owner: root
     group: root
     mode: 0700
+  become: true
 
 - name: Joining on Cluster K8S
   command: bash /root/kubeadm_join

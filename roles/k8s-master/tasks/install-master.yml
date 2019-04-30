@@ -1,17 +1,18 @@
 ---
 - name: Initizaling kubeadm
-  command: kubeadm init --apiserver-advertise-address=192.168.88.10
-  register: command_result
-  changed_when: command_result.changed
+  command: kubeadm init --apiserver-advertise-address=192.168.88.10 --apiserver-cert-extra-sans=192.168.88.10 --pod-network-cidr=192.168.88.0/24
   become: true
 
 - name: Configure kubectl
   shell: mkdir -p $HOME/.kube && cp -i /etc/kubernetes/admin.conf $HOME/.kube/config && chown $(id -u):$(id -g) $HOME/.kube/config
   become: true
 
-- name: Configure weave network Pod.
-  command: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=Q2xpZW50IFZlcnNpb246IHZlcnNpb24uSW5mb3tNYWpvcjoiMSIsIE1pbm9yOiIxNCIsIEdpdFZlcnNpb246InYxLjE0LjEiLCBHaXRDb21taXQ6ImI3Mzk0MTAyZDZlZjc3ODAxN2YyY2E0MDQ2YWJiYWEyM2I4OGMyOTAiLCBHaXRUcmVlU3RhdGU6ImNsZWFuIiwgQnVpbGREYXRlOiIyMDE5LTA0LTA4VDE3OjExOjMxWiIsIEdvVmVyc2lvbjoiZ28xLjEyLjEiLCBDb21waWxlcjoiZ2MiLCBQbGF0Zm9ybToibGludXgvYW1kNjQifQpTZXJ2ZXIgVmVyc2lvbjogdmVyc2lvbi5JbmZve01ham9yOiIxIiwgTWlub3I6IjE0IiwgR2l0VmVyc2lvbjoidjEuMTQuMSIsIEdpdENvbW1pdDoiYjczOTQxMDJkNmVmNzc4MDE3ZjJjYTQwNDZhYmJhYTIzYjg4YzI5MCIsIEdpdFRyZWVTdGF0ZToiY2xlYW4iLCBCdWlsZERhdGU6IjIwMTktMDQtMDhUMTc6MDI6NThaIiwgR29WZXJzaW9uOiJnbzEuMTIuMSIsIENvbXBpbGVyOiJnYyIsIFBsYXRmb3JtOiJsaW51eC9hbWQ2NCJ9Cg=="
+- name: Download Weave Scope
+  command: curl -L https://cloud.weave.works/launch/k8s/weavescope.yaml
   become: true
+
+- name: Create weave
+  command: kubectl create -f 'https://cloud.weave.works/launch/k8s/weavescope.yaml'
 
 - name: Create key to enter on Cluster
   command: kubeadm token create --print-join-command
