@@ -13,5 +13,6 @@
 
 ### .gitignore ###
 
+roles/k8s-node/files/kubeadm_join
 
 # End of https://www.gitignore.io/api/vagrant

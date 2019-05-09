@@ -1,1 +1,1 @@
-kubeadm join 192.168.88.10:6443 --token ep0a2p.0pr6686btwqxm5mp     --discovery-token-ca-cert-hash sha256:0d44cba14db4768cfdcb3c89808e0067c02bc8b6191e81d9ba46584afd6cb0ff 
+kubeadm join 192.168.88.10:6443 --token fx7ctx.z7fw3rbwhoo6s8p3     --discovery-token-ca-cert-hash sha256:acd6307ff3e5b750cc082366945656c4ff5c14e261422e8ccd74e4d67ad8e412 

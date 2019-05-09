@@ -1,18 +1,21 @@
 ---
 - name: Initizaling kubeadm
-  command: kubeadm init --apiserver-advertise-address=192.168.88.10 --apiserver-cert-extra-sans=192.168.88.10 --pod-network-cidr=192.168.88.0/24
+  command: kubeadm init --apiserver-advertise-address=192.168.88.10 --pod-network-cidr=10.244.0.0/16
   become: true
 
 - name: Configure kubectl
   shell: mkdir -p $HOME/.kube && cp -i /etc/kubernetes/admin.conf $HOME/.kube/config && chown $(id -u):$(id -g) $HOME/.kube/config
   become: true
 
-- name: Download Weave Scope
-  command: curl -L https://cloud.weave.works/launch/k8s/weavescope.yaml
+- name: Copy Weave Scope to master
+  copy:
+    src: files/weave.yml
+    dest: /root/
   become: true
 
-- name: Create weave
-  command: kubectl create -f 'https://cloud.weave.works/launch/k8s/weavescope.yaml'
+- name: Apply weave
+  command: kubectl apply -f '/root/weave.yml'
+  become: true
 
 - name: Create key to enter on Cluster
   command: kubeadm token create --print-join-command

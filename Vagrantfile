@@ -4,7 +4,7 @@
 machines = {
 	"master" => {"memory"=>"1024", "cpus"=>"2", "ip" => "10" },
 	"node01" => {"memory"=>"1024", "cpus"=>"2", "ip" => "11" },
-	#"node02" => {"memory"=>"1024", "cpus"=>"2", "ip" => "12" },
+	"node02" => {"memory"=>"1024", "cpus"=>"2", "ip" => "12" },
 }
 
 Vagrant.configure("2") do |config|
@@ -16,11 +16,10 @@ Vagrant.configure("2") do |config|
       machine.vm.hostname = "#{name}.lab.local"
       machine.vm.provider "virtualbox" do |vb|
         vb.cpus = "#{conf["cpus"]}"
-	vb.memory = "#{conf["memory"]}"
+				vb.memory = "#{conf["memory"]}"
 	vb.name = "#{name}"
 	vb.gui = false
       end
-
     end
   end
 	config.vm.provision "shell", inline: <<-SHELL

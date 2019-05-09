@@ -82,7 +82,7 @@
     dest: /etc/docker/daemon.json
   notify:
     - Reload daemon
-    - Restar docker service
+    - Restart docker service
   become: true
 
 - name: Install packages K8S.
@@ -94,4 +94,3 @@
     - "kubectl"
     - "kubelet"
   become: true
-
